@@ -1,6 +1,6 @@
 <img src="{{ asset('img/octocat.gif') }}"
      alt="octocat" height="100px" width="100px">
-<h1>La liste des formations de la classe {{ v1 }} dans la salle {{ v2 }}</h1>
+<h1>formation {{v1}} {{v2}}   </h1>
 {% if  listFormation is empty%}
 <h6>Tableau vide</h6>
 {% else %}
@@ -12,26 +12,45 @@
         <td>N_P</td>
         <td>Participer</td>
     </tr>
+    {% set myArray = {} %}
+    {% set somme =0 %}
     {% for f in listFormation %}
         {% if f.Description == "theorique" %}
         <tr>
             <td>{{ f.ref }}</td>
-            <td>{{ f.Titre }}</td>
+            <td>{{ f.Titre|upper }}</td>
             <td>{{ f.Description }}</td>
             <td>{{ f.nb_participants }}</td>
             <td>
                 {% if f.nb_participants == 0 %}
-                <a href="{{ path('app_reservation') }}">Participer</a>
+                    {% set titre=f.Titre %}
+
+
+                    <a  href="{{ path('app_reservation',{'titre':titre}  )  }}">Participer</a></form>
+
+
                 {% else %}
                 complet
                 {% endif%}
             </td>
         </tr>
         {% endif %}
+        {% set myArray = myArray|merge({(f.Titre): f.nb_participants}) %}
+        {% set somme=f.nb_participants+somme %}
     {% endfor %}
     {% endif %}
 </table>
-<h3 style="color: red">Nb de formation = {{ listFormation|length }}</h3>
-<h3 style="color: crimson">Total des participants : x</h3>
-{% set x= 0 %}
+<h3 style="color: coral">Nb de formation = {{ listFormation|length }}</h3>
+<h3 style="color: crimson">Total des participants : {{ somme }}</h3>
+{% set maxVal= myArray|first %}
+{% set y = myArray|keys|first %}
+{% for key, val in myArray %}
+{%  if val > maxVal %}
+{% set maxVal = val%}
+    {% set y = key %}
+    {% endif %}
+{% endfor %}
+<h3 style="color: #2143b0"> la formation ayant le plus grand nombre de participants : {{ y }} </h3>
+{% set x= 0 %}<br>
+
 nbr= {{ x }}

@@ -8,49 +8,69 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student
 {
+
     #[ORM\Id]
-    #[ORM\Column(length: 255)]
-    private ?string $ref = null;
+    #[ORM\Column]
+    private ?string $nce = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
-
-    public function getRef(): ?string
+    /**
+     * @return string|null
+     */
+    public function getNce(): ?string
     {
-        return $this->ref;
+        return $this->nce;
     }
 
-    public function getName(): ?string
+    /**
+     * @param string|null $nce
+     */
+    public function setNce(?string $nce): void
     {
-        return $this->name;
+        $this->nce = $nce;
     }
 
-    public function setName(string $name): self
+    /**
+     * @return string|null
+     */
+
+
+    #[ORM\Column(length: 100)]
+    private ?string $username = null;
+
+    #[ORM\ManyToOne(inversedBy: 'students')]
+    #[ORM\JoinColumn(onDelete:"CASCADE")]
+
+    private ?ClassRoom $classRoom = null;
+
+
+
+
+
+    public function getUsername(): ?string
     {
-        $this->name = $name;
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }
-    public function setRef(string $ref): self
+
+    public function getClassRoom(): ?ClassRoom
     {
-        $this->name = $ref;
+        return $this->classRoom;
+    }
+
+    public function setClassRoom(?ClassRoom $classRoom): self
+    {
+        $this->classRoom = $classRoom;
 
         return $this;
     }
 
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
 
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
 
-        return $this;
-    }
 }
